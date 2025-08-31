@@ -12,7 +12,7 @@ MAPS_API = os.environ["MAPS_API"]
 
 # art
 def program_display():
-    tprint("Street View Image Downloader")
+    tprint("Street Downloader")
 
 # init only runs
 def program_init():
