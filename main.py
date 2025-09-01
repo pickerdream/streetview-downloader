@@ -14,6 +14,7 @@ load_dotenv()
 MAPS_API = os.environ["MAPS_API"]
 parse = argparse.ArgumentParser()
 heading_global = [0,90,180,270]
+heading_name_global = ["north","east","south","west"]
 
 # art
 def program_display():
@@ -26,7 +27,7 @@ def program_init():
 
     # read args
     parse.add_argument("--excel",dest="excel_path",required=True,help="座標を入力したExcelファイルを指定")
-    parse.add_argument("--type",dest="file_output_type",choices=["0","1"],help="ファイルの出力方法",default=0) 
+    parse.add_argument("--type",dest="file_output_type",choices=["0","1"],help="ファイルの出力方法",default="1") 
     args = parse.parse_args()
 
     # set args
@@ -54,13 +55,18 @@ def load():
 def file_move():
     for LOCATION in EXCEL_LOCATION:
         global_path = "downloads/" + LOCATION
-        for heading in heading_global:
+        for heading,heading_name in zip(heading_global,heading_name_global):
             heading_path = global_path + "/" + str(heading) + "/gsv_0.jpg"
-            output_path = global_path + "-" + str(heading) + ".jpg"
+            heading_path_meta = global_path + "/" + str(heading) + "/metadata.json"
+            if OUTPUT_TYPE == "0":
+                output_path = global_path + "/" + heading_name + ".jpg"
+                output_path_meta = global_path + "/" + heading_name + ".json"
+                print(f"moving {heading_path} to {output_path}")
+            if OUTPUT_TYPE == "1":
+                output_path = global_path + "-" + heading_name + ".jpg"    
+                output_path_meta = global_path + "-" + heading_name + ".json"
             os.rename(heading_path,output_path)
-            heading_path = global_path + "/" + str(heading) + "/metadata.json"
-            output_path = global_path + "-" + str(heading) + ".json"
-            os.rename(heading_path,output_path)
+            os.rename(heading_path_meta,output_path_meta)
         shutil.rmtree(global_path)
 
 # main program
@@ -83,11 +89,10 @@ def main():
             download_path = global_path + "/" + str(heading)
             # download image
             image_result.download_links(download_path)
-    if OUTPUT_TYPE == "1":
-        file_move()
+    file_move()
     print("Success!")
     
-
+# start self programs
 if __name__ == "__main__":
     program_display()
     program_init()

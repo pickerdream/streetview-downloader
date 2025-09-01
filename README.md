@@ -30,7 +30,7 @@ python main.py --excel test.xlsx --type 0
 ### --type の説明
 downloadsフォルダにどのように出力されるかを指定することができます。
 #### --type 0
-標準のファイル出力方法です。downloadsフォルダにそれぞれの座標のフォルダが作られ、画像が出力されます。
+オプションのファイル出力方法です。現在バグで手元の検証環境では動きませんでした。downloadsフォルダにそれぞれの座標のフォルダが作られ、画像が出力されます。
 <pre>
 .
 └── downloads
@@ -49,12 +49,12 @@ downloadsフォルダにどのように出力されるかを指定すること�
             └── metadata.json
 </pre>
 #### --type 1
-オプションのファイル出力方法です。downloadsフォルダに画像が直下で出力されます。ファイルの名前は次のようになります。
+標準のファイル出力方法です。downloadsフォルダに画像が直下で出力されます。ファイルの名前は次のようになります。
 <pre>
-location-0.jpg
-location-90.jpg
-location-180.jpg
-location-270.jpg
+location-north.jpg
+location-east.jpg
+location-south.jpg
+location-west.jpg
 </pre>
 ## 注意事項
 APIの制限かどうかは定かでありませんが、最大で640x640の画像しか取得できません。パソコンがぶっ壊れたり爆発しても知りません。
