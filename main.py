@@ -27,7 +27,7 @@ def program_init():
 
     # read args
     parse.add_argument("--excel",dest="excel_path",required=True,help="座標を入力したExcelファイルを指定")
-    parse.add_argument("--type",dest="file_output_type",choices=["0","1"],help="ファイルの出力方法",default="1") 
+    parse.add_argument("--type",dest="file_output_type",choices=["0","1"],help="ファイルの出力方法",default="0") 
     args = parse.parse_args()
 
     # set args
@@ -53,6 +53,12 @@ def load():
 
 # file set
 def file_move():
+    # rename program
+    def os_rename():
+        os.rename(heading_path,output_path)
+        os.rename(heading_path_meta,output_path_meta)
+    
+    # file set main program per location
     for LOCATION in EXCEL_LOCATION:
         global_path = "downloads/" + LOCATION
         for heading,heading_name in zip(heading_global,heading_name_global):
@@ -62,12 +68,16 @@ def file_move():
                 output_path = global_path + "/" + heading_name + ".jpg"
                 output_path_meta = global_path + "/" + heading_name + ".json"
                 print(f"moving {heading_path} to {output_path}")
+                os_rename()
+                shutil.rmtree(global_path + "/" + str(heading))
             if OUTPUT_TYPE == "1":
                 output_path = global_path + "-" + heading_name + ".jpg"    
                 output_path_meta = global_path + "-" + heading_name + ".json"
-            os.rename(heading_path,output_path)
-            os.rename(heading_path_meta,output_path_meta)
-        shutil.rmtree(global_path)
+                print(f"moving {heading_path} to {output_path}")
+                os_rename()
+        if OUTPUT_TYPE == "1":
+            shutil.rmtree(global_path)
+            
 
 # main program
 def main():
